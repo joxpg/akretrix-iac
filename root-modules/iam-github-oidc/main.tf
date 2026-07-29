@@ -44,7 +44,7 @@ module "github_actions_role" {
         Principal = {
           Federated = local.oidc_provider_arn
         }
-        Action = "sts:AssumeRoleWithWebIdentity"
+        Action = ["sts:AssumeRoleWithWebIdentity", "sts:TagSession"]
         Condition = {
           StringEquals = {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
@@ -52,7 +52,7 @@ module "github_actions_role" {
           StringLike = {
             "token.actions.githubusercontent.com:sub" = [
               for branch in each.value.github_branches : (
-                branch == "*" ? "repo:${each.value.github_org}/${each.value.github_repository}:*" : "repo:${each.value.github_org}/${each.value.github_repository}:ref:refs/heads/${branch}"
+                branch == "*" ? "repo:${each.value.github_org}*/${each.value.github_repository}*:*" : "repo:${each.value.github_org}*/${each.value.github_repository}*:ref:refs/heads/${branch}"
               )
             ]
           }
