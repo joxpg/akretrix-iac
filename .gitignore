@@ -1,0 +1,23 @@
+# Local terraform/terragrunt directories
+.terraform/
+.terragrunt-cache/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local environment & secret files
+.env
+.env.*
+!.env.example
+
+# OS & Editor files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
