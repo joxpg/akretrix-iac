@@ -17,7 +17,7 @@ inputs = {
     }
     destination_email = {
       name        = "/akretrix/landing-page/destination_email"
-      value       = "contact@akretrix.com"
+      value       = "admin@akretrix.com"
       description = "Destination email address for landing page contact form submissions"
     }
     source_email = {
