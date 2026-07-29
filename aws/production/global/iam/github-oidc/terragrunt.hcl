@@ -11,6 +11,7 @@ inputs = {
   
   roles = {
     "GitHubActionsRoleDeploy" = {
+      github_org        = "joxpg"
       github_repository = "akretrix-landing-page"
       github_branches   = ["main", "release/qa"]
       policy_statements = [
