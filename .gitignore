@@ -21,3 +21,7 @@ override.tf.json
 .idea/
 *.swp
 *.swo
+
+# Security Scanning
+security-reports/
+.checkov.baseline

@@ -26,6 +26,8 @@ resource "aws_lambda_function" "this" {
     }
   }
 
+  kms_key_arn = var.kms_key_arn
+
   tags = var.tags
 }
 
@@ -39,10 +41,11 @@ resource "aws_apigatewayv2_integration" "api_integration" {
 }
 
 resource "aws_apigatewayv2_route" "api_route" {
-  count     = var.api_gateway_id != null && var.route_key != null ? 1 : 0
-  api_id    = var.api_gateway_id
-  route_key = var.route_key
-  target    = "integrations/${aws_apigatewayv2_integration.api_integration[0].id}"
+  count              = var.api_gateway_id != null && var.route_key != null ? 1 : 0
+  api_id             = var.api_gateway_id
+  route_key          = var.route_key
+  target             = "integrations/${aws_apigatewayv2_integration.api_integration[0].id}"
+  authorization_type = var.authorization_type
 }
 
 resource "aws_lambda_permission" "api_permission" {

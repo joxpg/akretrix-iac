@@ -1,0 +1,27 @@
+# Checkov configuration file
+# This enforces consistent execution across local and CI environments
+
+soft-fail: true # Ensure the scan completes and generates all reports before optionally failing a pipeline
+quiet: true     # Only show failed checks in the terminal
+framework:
+  - terraform
+
+skip-path:
+  - .terragrunt-cache
+  - .git
+  - aws
+  - docs
+
+# We skip rules that incur extra costs or unnecessary overhead for a landing page
+skip-check:
+  - CKV_AWS_115
+  - CKV_AWS_116
+  - CKV_AWS_117
+  - CKV_AWS_68   # CloudFront WAF ($5/mo base + per request fees)
+  - CKV_AWS_50   # Lambda X-Ray Tracing (Per-trace charges)
+  - CKV_AWS_338  # CloudWatch 1-year log retention (High storage cost)
+  - CKV_AWS_310  # CloudFront origin failover (Overkill/Extra origins)
+  - CKV_AWS_86   # CloudFront access logging (S3 log storage costs)
+  - CKV_AWS_272  # Lambda code signing (High operational complexity)
+  - CKV_AWS_374  # CloudFront geo restriction (Disabled intentionally for global sites)
+  - CKV_AWS_309  # API Gateway routes authorization type (Public endpoints use NONE)

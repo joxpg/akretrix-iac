@@ -73,3 +73,15 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "authorization_type" {
+  description = "Authorization type for API Gateway route (e.g. NONE, JWT, AWS_IAM)"
+  type        = string
+  default     = "NONE"
+}
+
+variable "kms_key_arn" {
+  description = "KMS Key ARN for Lambda environment variable encryption"
+  type        = string
+  default     = null
+}
