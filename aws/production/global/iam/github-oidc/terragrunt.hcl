@@ -10,7 +10,7 @@ inputs = {
   create_oidc_provider = true
   
   roles = {
-    "GitHubActionsLandingPageDeploy" = {
+    "GitHubActionsRoleDeploy" = {
       github_repository = "akretrix-landing-page"
       github_branches   = ["main", "release/qa"]
       policy_statements = [
