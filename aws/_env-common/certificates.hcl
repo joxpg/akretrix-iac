@@ -11,7 +11,7 @@ locals {
     # The certificate you provided earlier (Note: this is in the deployment account)
     production = {
       "us-east-1" = {
-        aliases = ["akretrix.com", "www.akretrix.com"]
+        aliases = ["akretrix.com", "www.akretrix.com", "api.akretrix.com", "*.akretrix.com"]
         arn   = "arn:aws:acm:us-east-1:126517272255:certificate/6a6f161a-d97b-4ffd-a7e4-a4da84510881"
       }
     }
