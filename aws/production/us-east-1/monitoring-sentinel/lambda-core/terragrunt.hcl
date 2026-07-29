@@ -3,7 +3,7 @@ include "root" {
 }
 
 terraform {
-  source = "${get_parent_terragrunt_dir()}/../root-modules/lambda-function"
+  source = "${get_parent_terragrunt_dir()}/..//root-modules/lambda-function"
 }
 
 dependency "api_gateway" {
