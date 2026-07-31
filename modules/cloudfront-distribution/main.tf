@@ -17,6 +17,57 @@ resource "aws_cloudfront_origin_access_control" "oac" {
   signing_protocol                  = "sigv4"
 }
 
+resource "aws_cloudfront_response_headers_policy" "security_headers" {
+  name    = "${var.name_prefix}-security-headers"
+  comment = "Security headers for ${var.name_prefix}"
+
+  security_headers_config {
+    strict_transport_security {
+      access_control_max_age_sec = 31536000
+      include_subdomains         = true
+      preload                    = true
+      override                   = true
+    }
+    content_type_options {
+      override = true
+    }
+    frame_options {
+      frame_option = "DENY"
+      override     = true
+    }
+    xss_protection {
+      protection = true
+      mode_block = true
+      override   = true
+    }
+    referrer_policy {
+      referrer_policy = "strict-origin-when-cross-origin"
+      override        = true
+    }
+  }
+}
+
+resource "aws_cloudfront_function" "url_rewrite" {
+  name    = "${var.name_prefix}-url-rewrite"
+  runtime = "cloudfront-js-1.0"
+  comment = "Appends index.html to subdirectories for static Astro sites on CloudFront"
+  publish = true
+  code    = <<EOF
+function handler(event) {
+    var request = event.request;
+    var uri = request.uri;
+    
+    if (uri.endsWith('/')) {
+        request.uri += 'index.html';
+    } else if (!uri.includes('.')) {
+        request.uri += '/index.html';
+    }
+    
+    return request;
+}
+EOF
+}
+
 resource "aws_cloudfront_distribution" "this" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -42,6 +93,13 @@ resource "aws_cloudfront_distribution" "this" {
       cookies {
         forward = "none"
       }
+    }
+
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.security_headers.id
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.url_rewrite.arn
     }
 
     viewer_protocol_policy = "redirect-to-https"
