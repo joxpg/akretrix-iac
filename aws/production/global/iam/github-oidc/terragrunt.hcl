@@ -37,7 +37,8 @@ inputs = {
             "cloudfront:CreateInvalidation"
           ]
           Resource = [
-            "arn:aws:cloudfront::126517272255:distribution/E2IOCDNBH2FVYW"
+            "arn:aws:cloudfront::126517272255:distribution/*",
+            "arn:aws:cloudfront::568529364684:distribution/*"
           ]
         },
         {
@@ -53,7 +54,11 @@ inputs = {
             "arn:aws:s3:::akretrix-landing-page-backend-pdn",
             "arn:aws:s3:::akretrix-landing-page-backend-pdn/*",
             "arn:aws:s3:::akretrix-landing-page-backend-qa",
-            "arn:aws:s3:::akretrix-landing-page-backend-qa/*"
+            "arn:aws:s3:::akretrix-landing-page-backend-qa/*",
+            "arn:aws:s3:::akretrix-elearning-backend-pdn",
+            "arn:aws:s3:::akretrix-elearning-backend-pdn/*",
+            "arn:aws:s3:::akretrix-elearning-backend-qa",
+            "arn:aws:s3:::akretrix-elearning-backend-qa/*"
           ]
         },
         {
@@ -71,16 +76,16 @@ inputs = {
             "cloudformation:DeleteChangeSet"
           ]
           Resource = [
-            "arn:aws:cloudformation:us-east-1:126517272255:stack/akretrix-landing-page-*",
-            "arn:aws:cloudformation:us-east-1:568529364684:stack/akretrix-landing-page-*"
+            "arn:aws:cloudformation:us-east-1:126517272255:stack/akretrix-*",
+            "arn:aws:cloudformation:us-east-1:568529364684:stack/akretrix-*"
           ]
         },
         {
           Effect = "Allow"
           Action = ["iam:PassRole"]
           Resource = [
-            "arn:aws:iam::126517272255:role/akretrix-landing-page-backend-pdn-cfn-deploy-role",
-            "arn:aws:iam::568529364684:role/akretrix-landing-page-backend-qa-cfn-deploy-role"
+            "arn:aws:iam::126517272255:role/*",
+            "arn:aws:iam::568529364684:role/*"
           ]
         }
       ]
