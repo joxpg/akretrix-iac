@@ -12,8 +12,9 @@ variable "existing_oidc_provider_arn" {
 
 variable "roles" {
   type = map(object({
-    github_org          = optional(string, "organization-akretrix")
-    github_repository   = string
+    github_org          = optional(string, "*")
+    github_repository   = optional(string, "*")
+    github_repositories = optional(list(string), [])
     github_branches     = optional(list(string), ["*"])
     policy_statements   = optional(list(any), [])
     managed_policy_arns = optional(list(string), [])

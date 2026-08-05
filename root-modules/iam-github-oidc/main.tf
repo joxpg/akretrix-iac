@@ -34,7 +34,7 @@ module "github_actions_role" {
   for_each = var.roles
   
   name        = each.key
-  description = "IAM Role assumed by GitHub Actions for repository: ${each.value.github_repository}"
+  description = "IAM Role assumed by GitHub Actions for repositories: ${join(", ", length(each.value.github_repositories) > 0 ? each.value.github_repositories : [each.value.github_repository])}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -50,11 +50,13 @@ module "github_actions_role" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = [
-              for branch in each.value.github_branches : (
-                branch == "*" ? "repo:${each.value.github_org}*/${each.value.github_repository}*:*" : "repo:${each.value.github_org}*/${each.value.github_repository}*:ref:refs/heads/${branch}"
-              )
-            ]
+            "token.actions.githubusercontent.com:sub" = flatten([
+              for repo in (length(each.value.github_repositories) > 0 ? each.value.github_repositories : [each.value.github_repository]) : [
+                for branch in each.value.github_branches : (
+                  branch == "*" ? "repo:${each.value.github_org}*/${repo}*:*" : "repo:${each.value.github_org}*/${repo}*:ref:refs/heads/${branch}"
+                )
+              ]
+            ])
           }
         }
       }
@@ -65,7 +67,7 @@ module "github_actions_role" {
   managed_policy_arns = each.value.managed_policy_arns
 
   tags = merge(var.tags, {
-    Repository = each.value.github_repository
+    Repository = join("_", length(each.value.github_repositories) > 0 ? each.value.github_repositories : [each.value.github_repository])
     ManagedBy  = "Terragrunt"
   })
 }

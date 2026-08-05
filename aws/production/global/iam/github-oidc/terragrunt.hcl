@@ -11,9 +11,9 @@ inputs = {
   
   roles = {
     "GitHubActionsRoleDeploy" = {
-      github_org        = "joxpg"
-      github_repository = "akretrix-landing-page"
-      github_branches   = ["main", "release/qa"]
+      github_org          = "joxpg"
+      github_repositories = ["akretrix-landing-page", "akretrix-elearning"]
+      github_branches     = ["main", "release/qa"]
       policy_statements = [
         {
           Effect = "Allow"
@@ -26,7 +26,9 @@ inputs = {
           ]
           Resource = [
             "arn:aws:s3:::pdn-akretrix-landing-page-static",
-            "arn:aws:s3:::pdn-akretrix-landing-page-static/*"
+            "arn:aws:s3:::pdn-akretrix-landing-page-static/*",
+            "arn:aws:s3:::pdn-akretrix-elearning-static",
+            "arn:aws:s3:::pdn-akretrix-elearning-static/*"
           ]
         },
         {
